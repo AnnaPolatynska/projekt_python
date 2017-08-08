@@ -40,21 +40,19 @@ class MySQLConnector:
             telefon = v[3]
             miasto = v[4]
             e_mail = v[5]
-           
             print("%-3s %-15s %-15s %-15s %-15s %-15s" % (id_k, imie, nazwisko, telefon, miasto, e_mail))
     def insert(self):
-        self.c.execute("INSERT INTO klient VALUES (10, 'Jan', 'Kowalski', '612-198-424','Piastów', 'Jan_Kowalski@gmail.com');")
+        self.c.execute("INSERT INTO klient VALUES (10, 'Malinowski','Zygmunt', '612-198-424','Piastów')")
         self.conn.commit()
-        print("dane wprowadzono")
+        print("wprowadzono dane: 10,  Zygmunt, Malinowski, 612-198-424, Piastów")
     def update(self):
-        self.c.execute("UPDATE klient SET miasto='Warszawa' where nazwisko = 'Barszcz';")
+        self.c.execute("UPDATE klient SET imię='Zbigniew' where nazwisko = 'Malinowski';")
         self.conn.commit()
         print("dane zaktualizowane")        
+
+
 c1 = MySQLConnector("MySQL13")
 
 
 
-
-
-
-# 
+   

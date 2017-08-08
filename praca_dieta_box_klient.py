@@ -34,26 +34,38 @@ class MySQLConnector:
 # adresy punktów odbioru        
     def selectP(self):
         self.c.execute("SELECT nazwa_punktu, adres_punktu, miasto FROM punkty_odbioru ORDER BY miasto;")
-        res = self.c.fetchall()        
+        res = self.c.fetchall() 
+        print("%-30s   |   %-30s   |   %-30s " % ("punkt odbioru", "adres punktu odbioru", "miasto"))
+        print("----------------------------------------------------------------------------------------------------")        
         for p in res:
             nazwa_punktu = p[0]
             adres_punktu = p[1]
             miasto = p[2]
-            print("%-30s %-30s %-30s" % (nazwa_punktu, adres_punktu, miasto))
-            
+            print("%-30s   |   %-30s   |   %-30s" % (nazwa_punktu, adres_punktu, miasto))
+        print("----------------------------------------------------------------------------------------------------")     
+
+
+
+
+
+
 # opisy diet
     def selectO(self):
         self.c.execute("SELECT dieta, opis, cena_netto * 1.23 AS 'cena_brutto' FROM diety;")
         res = self.c.fetchall()        
+        print("%-30s   |   %-140s   |   %-30s " % ("dieta", "opis diety", "cena brutto"))
+        print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
         for o in res:
             dieta = o[0]
             opis = o[1]
-            cena_brutto = o[2]
-            print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-            print("%-30s   |   %-140s   |   %-30s " % ("dieta", "   opis diety   ", "cena brutto"))
+            cena_brutto = o[2]         
             print("%-30s   |   %-140s   |   %-30s " %  (dieta, opis, cena_brutto))
+        print("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
     
-    
+
+
+
+
 # wybór diet
     def selectK(self):
         nav_k = ''
@@ -61,30 +73,33 @@ class MySQLConnector:
             nav_k = input("Jaką dietę chcesz kupić? (1) dietę odchudzającą-egzotyczne smaki , (2) dietę odchudzjącą standardową, (3) dietę zdrowotną- wzmocnij serce, (4) dietę zdrowotną standardową, (5) dietę sportową - wytrzymałość, (6) dietę sportową - siła (Q)- wyjście")
             if(nav_k == "1"):
                 self.select1()
-                print("kupiłeś dietę odchudzającą-egzotyczne smaki")
-                
+                print("zamówiłeś dietę odchudzającą-egzotyczne smaki")
+                print(" ")
             elif(nav_k == "2"):
                 self.select2()
-                print("kupiłeś dietę odchudzjącą standardową")
+                print("Zamówiłeś dietę odchudzjącą standardową. Twoje zamówienie czeka na opłatę.")
+                print(" ")
             elif(nav_k == "3"):
                 self.select3()
-                print("kupiłeś dietę zdrowotną- wzmocnij serce")
+                print("Zamówiłeś dietę zdrowotną- wzmocnij serce. Twoje zamówienie czeka na opłatę.")
+                print(" ")
             elif(nav_k == "4"):
                 self.select4()
-                print("kupiłeś dietę zdrowotną standardową")
+                print("Zamówiłeś dietę zdrowotną standardową.Twoje zamówienie czeka na opłatę.")
+                print(" ")
             elif(nav_k == "5"):
                 self.select5()
-                print("kupiłeś dietę dietę sportową - wytrzymałość,")
+                print("Zamówiłeś dietę dietę sportową - wytrzymałość. Twoje zamówienie czeka na opłatę.")
+                print(" ")
             elif(nav_k == "6"):
                 self.select6()
-                print("kupiłeś dietę dietę sportową - siła")
-                
-                
+                print("Zamówiłeś dietę dietę sportową - siła. Twoje zamówienie czeka na opłatę.")
+                print(" ")
+ 
                 
         print("Połączenie zakończone")
         self.conn.close() 
-        
-# w przyszłości połączenie z wpisaniem do tabeli zamówienia
+     
     def select1(self):
         self.c.execute("SELECT dieta, cena_netto, cena_netto * 1.23 AS 'cena_brutto' FROM diety WHERE id_d=1;")
         res = self.c.fetchall()        
@@ -92,13 +107,11 @@ class MySQLConnector:
             dieta = a[0]
             cena_netto = a[1]
             cena_brutto = a[2]
-            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " % ("dieta", "cena netto", "cena brutto"))
+            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " %  (dieta, cena_netto, cena_brutto))
             print("---------------------------------------------------------------------------------------------------------------------------")
-        
-        
-        
+                
     def select2(self):
         self.c.execute("SELECT dieta, cena_netto, cena_netto * 1.23 AS 'cena_brutto' FROM diety WHERE id_d=2;")
         res = self.c.fetchall()        
@@ -106,8 +119,8 @@ class MySQLConnector:
             dieta = a[0]
             cena_netto = a[1]
             cena_brutto = a[2]
-            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " % ("dieta", "cena netto", "cena brutto"))
+            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " %  (dieta, cena_netto, cena_brutto))
             print("---------------------------------------------------------------------------------------------------------------------------")        
 
@@ -118,8 +131,8 @@ class MySQLConnector:
             dieta = a[0]
             cena_netto = a[1]
             cena_brutto = a[2]
-            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " % ("dieta", "cena netto", "cena brutto"))
+            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " %  (dieta, cena_netto, cena_brutto))
             print("---------------------------------------------------------------------------------------------------------------------------")       
 
@@ -130,8 +143,8 @@ class MySQLConnector:
             dieta = a[0]
             cena_netto = a[1]
             cena_brutto = a[2]
-            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " % ("dieta", "cena netto", "cena brutto"))
+            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " %  (dieta, cena_netto, cena_brutto))
             print("---------------------------------------------------------------------------------------------------------------------------")       
 
@@ -142,8 +155,8 @@ class MySQLConnector:
             dieta = a[0]
             cena_netto = a[1]
             cena_brutto = a[2]
-            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " % ("dieta", "cena netto", "cena brutto"))
+            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " %  (dieta, cena_netto, cena_brutto))
             print("---------------------------------------------------------------------------------------------------------------------------")       
 
@@ -154,40 +167,35 @@ class MySQLConnector:
             dieta = a[0]
             cena_netto = a[1]
             cena_brutto = a[2]
-            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " % ("dieta", "cena netto", "cena brutto"))
+            print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " %  (dieta, cena_netto, cena_brutto))
             print("---------------------------------------------------------------------------------------------------------------------------")       
-
-
-
+            
+"""
+           def insert(self):
+            self.c.execute("INSERT INTO zamówienia VALUES ((8, id_k, 6, NIE, 29.08.2017r.);")
+            self.conn.commit()
+            print("zamówienie złożone")
+"""
         
         
 c1 = MySQLConnector("MySQL13")         
  
  
- 
-        
-"""
-    self.c.execute("SELECT nazwa_punktu, adres_punktu, miasto FROM punkty_odbioru ORDER BY miasto;")
-        res = self.c.fetchall()            
-        
-        for p in res:
-            nazwa_punktu = p[0]
-            adres_punktu = p[1]
-            miasto = p[2]
-            print("%-30s %-30s %-30s" % (nazwa_punktu, adres_punktu, miasto))
-"""    
- 
-    #   self.select1()
     
-    
-    
-    
-    
-"""
-    def insert(self):
-        self.c.execute("INSERT INTO klient VALUES (10, 'Jan', 'Kowalski', '612-198-424','Piastów', 'Jan_Kowalski@gmail.com');")
-        self.conn.commit()
-        print("dane wprowadzono")
+"""  
+            def selectK(self):
+                nav_k = ''
+                while(nav_k != "Q"):
+                    nav_k = input("Jaką dietę chcesz kupić? (1) dietę odchudzającą-egzotyczne smaki , (2) dietę odchudzjącą standardową, (3) dietę zdrowotną- wzmocnij serce, (4) dietę zdrowotną standardową, (5) dietę sportową - wytrzymałość, (6) dietę sportową - siła (Q)- wyjście")
+                    if(nav_k == "1"):
+                        self.select1()
+                        print("zamówiłeś dietę odchudzającą-egzotyczne smaki")
+                        print(" ")
+                    elif(nav_k == "2"):
+                        self.select2()
+                        print("Zamówiłeś dietę odchudzjącą standardową. Twoje zamówienie czeka na     opłatę.")
+                print(" ")
+
 """
