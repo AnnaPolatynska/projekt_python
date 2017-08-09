@@ -7,30 +7,37 @@ conn = pymysql.connect("localhost", "root2", "MySQL13", "dieta_box", charset='ut
 import pymysql
 
 
-
-
 # interfejs dla klientów wyboru lokalizacji odbioru i dietaBoxu
-
 
 #menu główne
 class MySQLConnector:
     def __init__(self, passwd):
-        self.passwd = passwd
         self.conn = pymysql.connect("localhost", "root2", "MySQL13", "dieta_box", charset='utf8mb4')
+        cur = conn.cursor()        
+        login = str(input("Podaj login: "))
+        haslo = str(input("Podaj hasło: "))        
+        bdd = "SELECT login, haslo FROM uprawnienia WHERE login=%s and haslo=%s"
+        cur.execute(bdd,(login,haslo))            
         self.c = self.conn.cursor()
         print("Połączenie ustanowione")
-        nav_k = ''
-        while(nav_k != "Q"):
-            nav_k = input("Co chcesz zrobić? (P)-Wybrać punkty odbioru, (O)-zapoznać się z ofertą, (K)-kupić dietę, (Q)- wyjście")
-            if(nav_k == "P"):
-                self.selectP()
-            elif(nav_k == "O"):
-                self.selectO()                  
-            elif(nav_k == "K"):
-                self.selectK()   
-        print("Połączenie zakończone")
-        self.conn.close()    
+        if(cur.rowcount == 1):
+            print("Zalogowano poprawnie")
+            nav_s = ''
+            while(nav_s != "Q"):
+                nav_s = input("Co chcesz zrobić? (P)-Wybrać punkty odbioru, (O)-zapoznać się z ofertą, (K)-kupić dietę, (Q)- wyjście")
+                if(nav_s == "P"):
+                    self.selectP()
+                elif(nav_s == "O"):
+                    self.selectO()
+                elif(nav_s == "K"):
+                    self.selectK()                
+            print("Połączenie zakończone")
+            self.conn.close()    
+            
+        else:
+            print("Błąd logowania")
         
+   
 # adresy punktów odbioru        
     def selectP(self):
         self.c.execute("SELECT nazwa_punktu, adres_punktu, miasto FROM punkty_odbioru ORDER BY miasto;")
@@ -43,11 +50,6 @@ class MySQLConnector:
             miasto = p[2]
             print("%-30s   |   %-30s   |   %-30s" % (nazwa_punktu, adres_punktu, miasto))
         print("----------------------------------------------------------------------------------------------------")     
-
-
-
-
-
 
 # opisy diet
     def selectO(self):
@@ -171,31 +173,7 @@ class MySQLConnector:
             print("---------------------------------------------------------------------------------------------------------------------------")
             print("%-30s   |   %-40s   |   %-30s " %  (dieta, cena_netto, cena_brutto))
             print("---------------------------------------------------------------------------------------------------------------------------")       
-            
-"""
-           def insert(self):
-            self.c.execute("INSERT INTO zamówienia VALUES ((8, id_k, 6, NIE, 29.08.2017r.);")
-            self.conn.commit()
-            print("zamówienie złożone")
-"""
-        
-        
-c1 = MySQLConnector("MySQL13")         
- 
- 
-    
-"""  
-            def selectK(self):
-                nav_k = ''
-                while(nav_k != "Q"):
-                    nav_k = input("Jaką dietę chcesz kupić? (1) dietę odchudzającą-egzotyczne smaki , (2) dietę odchudzjącą standardową, (3) dietę zdrowotną- wzmocnij serce, (4) dietę zdrowotną standardową, (5) dietę sportową - wytrzymałość, (6) dietę sportową - siła (Q)- wyjście")
-                    if(nav_k == "1"):
-                        self.select1()
-                        print("zamówiłeś dietę odchudzającą-egzotyczne smaki")
-                        print(" ")
-                    elif(nav_k == "2"):
-                        self.select2()
-                        print("Zamówiłeś dietę odchudzjącą standardową. Twoje zamówienie czeka na     opłatę.")
-                print(" ")
+c1= MySQLConnector("MySQL13")   
+  
 
-"""
+ 

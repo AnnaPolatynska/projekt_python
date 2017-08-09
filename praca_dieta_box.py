@@ -10,24 +10,35 @@ import pymysql
 
 
 # interfejs dla pracownika wprowadzajego do bazy danych dieta_box dane klientów
-
 class MySQLConnector:
     def __init__(self, passwd):
-        self.passwd = passwd
         self.conn = pymysql.connect("localhost", "root2", "MySQL13", "dieta_box", charset='utf8mb4')
+        cur = conn.cursor()        
+        login = str(input("Podaj login: "))
+        haslo = str(input("Podaj hasło: "))        
+        bdd = "SELECT login, haslo FROM uprawnienia_prac WHERE login=%s and haslo=%s"
+        cur.execute(bdd,(login,haslo))            
         self.c = self.conn.cursor()
         print("Połączenie ustanowione")
-        nav = ''
-        while(nav != "Q"):
-            nav = input("Co chcesz zrobić? (S)-select, (I)-insert, (U)-update, (Q)- wyjście")
-            if(nav == "S"):
-                self.select()
-            elif(nav == "I"):
-                self.insert()
-            elif(nav == "U"):
-                self.update()                
-        print("Połączenie zakończone")
-        self.conn.close()    
+        if(cur.rowcount == 1):
+            print("Zalogowano poprawnie")
+            nav = ''
+            while(nav != "Q"):
+                nav = input("Co chcesz zrobić? (S)-select, (I)-insert, (U)-update, (Q)- wyjście")
+                if(nav == "S"):
+                    self.select()
+                elif(nav == "I"):
+                    self.insert()
+                elif(nav == "U"):
+                    self.update()                
+            print("Połączenie zakończone")
+            self.conn.close() 
+                           
+            
+        else:
+            print("Błąd logowania")
+
+  
     def select(self):
         self.c.execute("select id_k, imię, nazwisko, telefon, miasto, e_mail FROM klient NATURAL LEFT JOIN uprawnienia;")
         res = self.c.fetchall()        
